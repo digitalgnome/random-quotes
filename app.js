@@ -28,7 +28,12 @@ const generateQuote = quotesArray => {
   });
   const quote = quotesArray[Math.floor(Math.random() * 1000)];
   h2ModalText.innerHTML =
-    quote.text + '<br>- <span>' + quote.author + '</span>';
+    '<span class="quote">' +
+    quote.text +
+    '</span>' +
+    '<br><span id="author">- ' +
+    quote.author +
+    '</span>';
 };
 
 modalBtn.addEventListener('click', event => {
