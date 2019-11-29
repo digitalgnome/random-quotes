@@ -23,7 +23,7 @@ const getQuote = () => {
 const generateQuote = quotesArray => {
   quotesArray.forEach(quote => {
     if (quote.author === null) {
-      console.log('substitued unknown');
+      quote.author = 'Unknown';
     }
   });
   const quote = quotesArray[Math.floor(Math.random() * 1000)];
