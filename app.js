@@ -30,7 +30,6 @@ const getQuote = () => {
     .then(rawData => console.log('raw data =', rawData))
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       // Store an array of objects with author and quote
       const fetchedQuotes = data.slice(0, 999);
       generateQuote(fetchedQuotes);
