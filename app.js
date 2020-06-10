@@ -1,48 +1,53 @@
+import quotes from './quotes.mjs';
+
 const modalBtn = document.querySelector('#modalBtn');
 const modal = document.querySelector('#modal');
 const h2ModalText = document.querySelector('#modal-text');
-
-// Random quotes API call
-
-const quotesAPIEndpoint = 'https://type.fit/api/quotes';
-
-const getQuote = () => {
-  fetch(quotesAPIEndpoint)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
-      // Store an array of objects with author and quote
-      const quotes = data.slice(0, 999);
-      generateQuote(quotes);
-    });
-};
 
 // Generate random quote, after replacing null authors with 'Unknown'
 // Inject quote into modal HTML elements
 const generateQuote = quotesArray => {
   quotesArray.forEach(quote => {
     if (quote.author === null) {
+      // eslint-disable-next-line no-param-reassign
       quote.author = 'Unknown';
     }
   });
   const quote = quotesArray[Math.floor(Math.random() * 1000)];
-  h2ModalText.innerHTML =
-    '<span class="quote">' +
-    quote.text +
-    '</span>' +
-    '<br><span id="author">- ' +
-    quote.author +
-    '</span>';
+  h2ModalText.innerHTML = `<span class="quote">${
+    quote.text
+  }</span>`
+    + `<br><span id="author">- ${
+      quote.author
+    }</span>`;
 };
 
-modalBtn.addEventListener('click', event => {
+// Random quotes API call
+const quotesAPIEndpoint = 'https://type.fit/api/quotes';
+
+const getQuote = () => {
+  fetch(quotesAPIEndpoint, { mode: 'no-cors' })
+    .then(rawData => console.log('raw data =', rawData))
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // Store an array of objects with author and quote
+      const fetchedQuotes = data.slice(0, 999);
+      generateQuote(fetchedQuotes);
+    })
+    .catch(err => {
+      console.log('Error occured fetch quotes:', err);
+      generateQuote(quotes);
+    });
+};
+
+modalBtn.addEventListener('click', () => {
   modal.style.display = 'block';
   getQuote();
 
   modalBtn.blur();
 });
 
-modal.addEventListener('click', event => {
+modal.addEventListener('click', () => {
   modal.style.display = 'none';
 });
